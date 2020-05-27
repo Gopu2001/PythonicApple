@@ -298,7 +298,7 @@ def moveCanvas():
         nonlocal mv_right
         nonlocal mv_bottom
         cv = document.getElementById("canvas")
-        if player.alive and (player.snake_length-1 >= 1):
+        if player.alive and (player.snake_length-1 >= 10):
             if left+w+20 < window.innerWidth and mv_right:
                 left += cv_mv
                 if left+w+20 >= window.innerWidth:

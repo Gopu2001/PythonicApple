@@ -3,17 +3,17 @@
   <head>
     <title>PythonicApple</title>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
   </head>
   <body>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-database.js" type="text/javascript"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-analytics.js" type="text/javascript"></script>
 
     <script>
       // Your web app's Firebase configuration
@@ -174,9 +174,13 @@
         canvas.id = "canvas";
         divCanvas.appendChild(canvas);
         document.body.appendChild(divCanvas);
-
-        var snake = import("./__target__/snake.js");
-        window.snake = snake;
+        
+        var divImport = document.createElement("div");
+        var script = document.createElement("script");
+        script.type = "module";
+        script.innerHTML = 'var snake = import("./__target__/snake.js"); window.snake = snake;';
+        divImport.appendChild(script);
+        document.body.appendChild(divImport);
       }
       function gameOver() {
         var setData = JSON.parse("{\""+username+"\":"+score+"}");
