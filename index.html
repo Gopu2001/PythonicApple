@@ -167,6 +167,13 @@
         dispScore = document.createElement("H1");
         dispScore.innerHTML = "Score: ".concat(score);
         document.body.appendChild(dispScore);
+
+        divCanvas = document.createElement("div");
+        canvas = document.createElement("CANVAS");
+        canvas.style.position = "relative";
+        canvas.id = "canvas";
+        divCanvas.appendChild(canvas);
+        document.body.appendChild(divCanvas);
         
         var divImport = document.createElement("div");
         var script = document.createElement("script");
@@ -174,13 +181,6 @@
         script.innerHTML = 'var snake = import("./__target__/snake.js"); window.snake = snake;';
         divImport.appendChild(script);
         document.body.appendChild(divImport);
-        
-        divCanvas = document.createElement("div");
-        canvas = document.createElement("CANVAS");
-        canvas.style.position = "relative";
-        canvas.id = "canvas";
-        divCanvas.appendChild(canvas);
-        document.body.appendChild(divCanvas);
       }
       function gameOver() {
         var setData = JSON.parse("{\""+username+"\":"+score+"}");
