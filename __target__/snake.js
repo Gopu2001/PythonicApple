@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2020-05-27 10:56:18
+// Transcrypt'ed from Python, 2020-05-27 14:04:26
 import {AssertionError, AttributeError, BaseException, DeprecationWarning, Exception, IndexError, IterableError, KeyError, NotImplementedError, RuntimeWarning, StopIteration, UserWarning, ValueError, Warning, __JsIterator__, __PyIterator__, __Terminal__, __add__, __and__, __call__, __class__, __envir__, __eq__, __floordiv__, __ge__, __get__, __getcm__, __getitem__, __getslice__, __getsm__, __gt__, __i__, __iadd__, __iand__, __idiv__, __ijsmod__, __ilshift__, __imatmul__, __imod__, __imul__, __in__, __init__, __ior__, __ipow__, __irshift__, __isub__, __ixor__, __jsUsePyNext__, __jsmod__, __k__, __kwargtrans__, __le__, __lshift__, __lt__, __matmul__, __mergefields__, __mergekwargtrans__, __mod__, __mul__, __ne__, __neg__, __nest__, __or__, __pow__, __pragma__, __proxy__, __pyUseJsNext__, __rshift__, __setitem__, __setproperty__, __setslice__, __sort__, __specialattrib__, __sub__, __super__, __t__, __terminal__, __truediv__, __withblock__, __xor__, abs, all, any, assert, bool, bytearray, bytes, callable, chr, copy, deepcopy, delattr, dict, dir, divmod, enumerate, filter, float, getattr, hasattr, input, int, isinstance, issubclass, len, list, map, max, min, object, ord, pow, print, property, py_TypeError, py_iter, py_metatype, py_next, py_reversed, py_typeof, range, repr, round, set, setattr, sorted, str, sum, tuple, zip} from './org.transcrypt.__runtime__.js';
 import {fabric} from './com.fabricjs.js';
 var __name__ = '__main__';
@@ -13,7 +13,12 @@ export var space = __left0__ [2];
 window.onkeydown = (function __lambda__ (event) {
 	return event.keycode != space;
 });
-export var canvas = new fabric.Canvas ('canvas', dict ({'width': w, 'height': h}));
+var __left0__ = null;
+export var player = __left0__;
+export var apple = __left0__;
+export var obstacle = __left0__;
+export var mongoose = __left0__;
+export var canvas = __left0__;
 export var facing = [1, 2, 3, 4];
 export var LEFT = 1;
 export var UP = 2;
@@ -232,56 +237,72 @@ export var Mongoose =  __class__ ('Mongoose', [object], {
 	});}
 });
 export var py_update = function () {
-	player.py_update ();
-	if (player.loc [0] == apple.loc [0] && player.loc [1] == apple.loc [1]) {
-		apple.eat ();
-		apple.spawn ();
-		player.snake_length++;
-		changeScore (player.snake_length - 1);
-		if (player.snake_length - 1 > 1) {
-			obstacle.generate_obstacle (apple.loc);
-			if (!__in__ (obstacle.locs, player.coords)) {
-				obstacle.draw_obstacle ();
+	if (player != null) {
+		moveCanvas ();
+		changeColor ();
+	}
+	if (!(started) && start) {
+		startTheGame ();
+	}
+	if (start && started && player != null) {
+		player.py_update ();
+		if (player.loc [0] == apple.loc [0] && player.loc [1] == apple.loc [1]) {
+			apple.eat ();
+			apple.spawn ();
+			player.snake_length++;
+			changeScore (player.snake_length - 1);
+			if (player.snake_length - 1 > 1) {
+				obstacle.generate_obstacle (apple.loc);
+				if (!__in__ (obstacle.locs, player.coords)) {
+					obstacle.draw_obstacle ();
+				}
 			}
 		}
-	}
-	if (mongoose.hunting && player.loc [0] == mongoose.locs [0] && player.loc [1] == mongoose.locs [1]) {
-		mongoose.die ();
-		player.snake_length += 2;
-		changeScore (player.snake_length - 1);
-	}
-	var index = 0;
-	for (var coordinate of player.coords) {
-		if (mongoose.locs [0] == coordinate [0] && mongoose.locs [1] == coordinate [1] && mongoose.hunting) {
-			player.snake_length = len (player.coords) - index;
+		if (mongoose.hunting && player.loc [0] == mongoose.locs [0] && player.loc [1] == mongoose.locs [1]) {
+			mongoose.die ();
+			player.snake_length += 2;
 			changeScore (player.snake_length - 1);
 		}
-		index++;
-	}
-	if (obstacle.in_place && player.loc [0] == obstacle.locs [0] && player.loc [1] == obstacle.locs [1]) {
-		alert ('You ran into an obstacle! Click OK to continue.');
-		player.die ();
-	}
-	if (player.loc [0] < 0 || player.loc [0] >= w || player.loc [1] < 0 || player.loc [1] >= h) {
-		alert ('You went out of bounds! Click OK to continue.');
-		player.die ();
-	}
-	if (player.alive) {
-		var update_time = 150 - 10 * (player.snake_length - 1);
-		if (update_time <= 0) {
-			var update_time = 1;
+		var index = 0;
+		for (var coordinate of player.coords) {
+			if (mongoose.locs [0] == coordinate [0] && mongoose.locs [1] == coordinate [1] && mongoose.hunting) {
+				player.snake_length = len (player.coords) - index;
+				changeScore (player.snake_length - 1);
+			}
+			index++;
 		}
-		window.setTimeout (py_update, update_time);
+		if (obstacle.in_place && player.loc [0] == obstacle.locs [0] && player.loc [1] == obstacle.locs [1]) {
+			alert ('You ran into an obstacle! Click OK to continue.');
+			player.die ();
+		}
+		if (player.loc [0] < 0 || player.loc [0] >= w || player.loc [1] < 0 || player.loc [1] >= h) {
+			alert ('You went out of bounds! Click OK to continue.');
+			player.die ();
+		}
+		if (player.alive) {
+			var update_time = 150 - 10 * (player.snake_length - 1);
+			if (update_time <= 0) {
+				var update_time = 1;
+			}
+			window.setTimeout (py_update, update_time);
+		}
+	}
+	else {
+		window.setTimeout (py_update, 500);
 	}
 };
 export var pauseGame = function () {
 	alert ('Game Paused. Click OK to continue.');
 };
-export var player = Snake ();
-export var apple = Apple ();
-export var obstacle = Obstacle ();
-export var mongoose = Mongoose ();
-window.addEventListener ('keydown', player.turn, true);
+export var startTheGame = function () {
+	canvas = new fabric.Canvas ('canvas', dict ({'width': w, 'height': h}));
+	player = Snake ();
+	apple = Apple ();
+	obstacle = Obstacle ();
+	mongoose = Mongoose ();
+	window.addEventListener ('keydown', player.turn, true);
+	started = true;
+};
 py_update ();
 export var draw_mongoose = function () {
 	mongoose.draw ();
@@ -304,53 +325,57 @@ export var draw_mongoose = function () {
 	}
 };
 export var genMongoose = function () {
-	mongoose.generate_mongoose ();
-	draw_mongoose ();
-	window.setTimeout (genMongoose, ((250 * h) / inc) * 2);
+	if (start && started) {
+		mongoose.generate_mongoose ();
+		draw_mongoose ();
+		window.setTimeout (genMongoose, ((250 * h) / inc) * 2);
+	}
 };
 window.setTimeout (genMongoose, 2000);
 export var cv_mv = 1;
 export var left = 0;
 export var top = 0;
 export var moveCanvas = function () {
-	if (player.alive) {
-		var cv = document.getElementById ('canvas');
-		if (player.alive && player.snake_length - 1 >= 1) {
-			if ((left + w) + 20 < window.innerWidth && mv_right) {
-				left += cv_mv;
-				if ((left + w) + 20 >= window.innerWidth) {
-					mv_right = false;
+	if (start && started) {
+		if (player.alive) {
+			var cv = document.getElementById ('canvas');
+			if (player.alive && player.snake_length - 1 >= 10) {
+				if ((left + w) + 20 < window.innerWidth && mv_right) {
+					left += cv_mv;
+					if ((left + w) + 20 >= window.innerWidth) {
+						mv_right = false;
+					}
+				}
+				else if (!(mv_right)) {
+					left -= cv_mv;
+					if (left <= 0) {
+						mv_right = true;
+					}
+				}
+				if ((top + h) + 160 < window.innerHeight && mv_bottom) {
+					top += cv_mv;
+					if ((top + h) + 160 >= window.innerHeight) {
+						mv_bottom = false;
+					}
+				}
+				else if (!(mv_bottom)) {
+					top -= cv_mv;
+					if (top <= 0) {
+						mv_bottom = true;
+					}
 				}
 			}
-			else if (!(mv_right)) {
-				left -= cv_mv;
-				if (left <= 0) {
-					mv_right = true;
-				}
-			}
-			if ((top + h) + 160 < window.innerHeight && mv_bottom) {
-				top += cv_mv;
-				if ((top + h) + 160 >= window.innerHeight) {
-					mv_bottom = false;
-				}
-			}
-			else if (!(mv_bottom)) {
-				top -= cv_mv;
-				if (top <= 0) {
-					mv_bottom = true;
-				}
-			}
+			cv.style.left = ('' + left) + 'px';
+			cv.style.top = ('' + top) + 'px';
+			cv.style.border = '5px solid black';
 		}
-		cv.style.left = ('' + left) + 'px';
-		cv.style.top = ('' + top) + 'px';
-		cv.style.border = '5px solid black';
 	}
+	window.setTimeout (moveCanvas, 75);
 };
 export var mv_right = true;
 export var mv_bottom = true;
-window.setInterval (moveCanvas, 75);
 export var changeColor = function () {
-	if (player.alive && player.snake_length - 1 >= 5) {
+	if (start && started && player.alive && player.snake_length - 1 >= 5) {
 		if (r > 0 && rd) {
 			r--;
 			if (r == 0) {
@@ -389,6 +414,7 @@ export var changeColor = function () {
 		}
 		canvas.backgroundColor = ((((('rgb(' + r) + ',') + g) + ',') + b) + ')';
 	}
+	window.setTimeout (changeColor, 100);
 };
 var __left0__ = tuple ([int (255 * Math.random ()), int (255 * Math.random ()), int (255 * Math.random ())]);
 export var r = __left0__ [0];
@@ -398,6 +424,5 @@ var __left0__ = tuple ([true, true, true]);
 export var rd = __left0__ [0];
 export var gd = __left0__ [1];
 export var bd = __left0__ [2];
-window.setInterval (changeColor, 100);
 
 //# sourceMappingURL=snake.map

@@ -63,6 +63,8 @@
       var lowestScore = -1;
       var usernames;
       var scores;
+      var start = false;
+      var started = false
 
       function setupHomeTable(tabheading, time) {
         var usnas = [];
@@ -166,21 +168,17 @@
         $("#tOS").remove();
         dispScore = document.createElement("H1");
         dispScore.innerHTML = "Score: ".concat(score);
-        document.body.appendChild(dispScore);
+        document.body.insertBefore(dispScore, document.getElementById("importDiv"));
 
         divCanvas = document.createElement("div");
         canvas = document.createElement("CANVAS");
         canvas.style.position = "relative";
         canvas.id = "canvas";
         divCanvas.appendChild(canvas);
-        document.body.appendChild(divCanvas);
+        document.body.insertBefore(divCanvas, document.getElementById("importDiv"));
+        console.log("canvas width: " + canvas.width)
         
-        var divImport = document.createElement("div");
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.innerHTML = 'var snake = import("https://raw.githubusercontent.com/Gopu2001/PythonicApple/master/__target__/snake.js"); window.snake = snake;';
-        divImport.appendChild(script);
-        document.body.appendChild(divImport);
+        start = true;
       }
       function gameOver() {
         var setData = JSON.parse("{\""+username+"\":"+score+"}");
@@ -212,6 +210,7 @@
       }
     </script>
     <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+    <script type="module" id="importDiv">import * as snake from "./__target__/snake.js"; window.snake = snake;</script>
     <style>body {visibility: visible;}</style>
   </body>
 </html>

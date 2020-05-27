@@ -10,7 +10,7 @@ inc = 20
 enter, esc, space = 13, 27, 32
 
 window.onkeydown = lambda event: event.keycode != space
-canvas = __new__(fabric.Canvas("canvas", {'width': w, 'height': h}))
+player = apple = obstacle = mongoose = canvas = None
 
 facing = [1, 2, 3, 4]
 LEFT = 1
@@ -223,47 +223,66 @@ class Mongoose:
 
 def update():
     nonlocal slowdown
-    player.update()
-    if player.loc[0] == apple.loc[0] and player.loc[1] == apple.loc[1]:
-        apple.eat()
-        apple.spawn()
-        player.snake_length += 1
-        changeScore(player.snake_length - 1)
-        if player.snake_length-1 > 1:
-            obstacle.generate_obstacle(apple.loc)
-            if obstacle.locs not in player.coords:
-                obstacle.draw_obstacle()
-    if mongoose.hunting and player.loc[0]==mongoose.locs[0] and player.loc[1]==mongoose.locs[1]:
-        mongoose.die()
-        player.snake_length += 2
-        changeScore(player.snake_length - 1)
-    index = 0
-    for coordinate in player.coords:
-        if mongoose.locs[0] == coordinate[0] and mongoose.locs[1] == coordinate[1] and mongoose.hunting:
-            player.snake_length = len(player.coords)-index
+    nonlocal start
+    nonlocal started
+    if player != None:        
+        moveCanvas()
+        changeColor()
+    if not started and start:
+        startTheGame()
+    if start and started and player != None:
+        player.update()
+        if player.loc[0] == apple.loc[0] and player.loc[1] == apple.loc[1]:
+            apple.eat()
+            apple.spawn()
+            player.snake_length += 1
             changeScore(player.snake_length - 1)
-        index += 1
-    if obstacle.in_place and player.loc[0]==obstacle.locs[0] and player.loc[1]==obstacle.locs[1]:
-        alert("You ran into an obstacle! Click OK to continue.")
-        player.die()
-    if player.loc[0] < 0 or player.loc[0] >= w or player.loc[1] < 0 or player.loc[1] >= h:
-        alert("You went out of bounds! Click OK to continue.")
-        player.die()
-    if player.alive:
-        update_time = 150 - (10*(player.snake_length-1))
-        if update_time <= 0:
-            update_time = 1
-        window.setTimeout(update, update_time)
-    #window.onblur = pauseGame
+            if player.snake_length-1 > 1:
+                obstacle.generate_obstacle(apple.loc)
+                if obstacle.locs not in player.coords:
+                    obstacle.draw_obstacle()
+        if mongoose.hunting and player.loc[0]==mongoose.locs[0] and player.loc[1]==mongoose.locs[1]:
+            mongoose.die()
+            player.snake_length += 2
+            changeScore(player.snake_length - 1)
+        index = 0
+        for coordinate in player.coords:
+            if mongoose.locs[0] == coordinate[0] and mongoose.locs[1] == coordinate[1] and mongoose.hunting:
+                player.snake_length = len(player.coords)-index
+                changeScore(player.snake_length - 1)
+            index += 1
+        if obstacle.in_place and player.loc[0]==obstacle.locs[0] and player.loc[1]==obstacle.locs[1]:
+            alert("You ran into an obstacle! Click OK to continue.")
+            player.die()
+        if player.loc[0] < 0 or player.loc[0] >= w or player.loc[1] < 0 or player.loc[1] >= h:
+            alert("You went out of bounds! Click OK to continue.")
+            player.die()
+        if player.alive:
+            update_time = 150 - (10*(player.snake_length-1))
+            if update_time <= 0:
+                update_time = 1
+            window.setTimeout(update, update_time)
+    else:
+        window.setTimeout(update, 500)
+        #window.onblur = pauseGame
 
 def pauseGame():
     alert("Game Paused. Click OK to continue.")
 
-player = Snake()
-apple = Apple()
-obstacle = Obstacle()
-mongoose = Mongoose()
-window.addEventListener('keydown', player.turn, True)
+def startTheGame():
+    nonlocal canvas
+    canvas = __new__(fabric.Canvas("canvas", {'width': w, 'height': h}))
+    nonlocal started
+    nonlocal player
+    nonlocal apple
+    nonlocal obstacle
+    nonlocal mongoose
+    player = Snake()
+    apple = Apple()
+    obstacle = Obstacle()
+    mongoose = Mongoose()
+    window.addEventListener('keydown', player.turn, True)
+    started = True
 update()
 
 def draw_mongoose():
@@ -283,9 +302,10 @@ def draw_mongoose():
         window.setTimeout(draw_mongoose, 250)
 
 def genMongoose():
-    mongoose.generate_mongoose()
-    draw_mongoose()
-    window.setTimeout(genMongoose, 250*h/inc*2)
+    if start and started:
+        mongoose.generate_mongoose()
+        draw_mongoose()
+        window.setTimeout(genMongoose, 250*h/inc*2)
 
 window.setTimeout(genMongoose, 2000)
 
@@ -294,37 +314,40 @@ left = 0
 top = 0
 
 def moveCanvas():
-    if player.alive:
-        nonlocal mv_right
-        nonlocal mv_bottom
-        cv = document.getElementById("canvas")
-        if player.alive and (player.snake_length-1 >= 10):
-            if left+w+20 < window.innerWidth and mv_right:
-                left += cv_mv
-                if left+w+20 >= window.innerWidth:
-                    mv_right = False
-            elif not mv_right:
-                left -= cv_mv
-                if left <= 0:
-                    mv_right = True
-            if top+h+160 < window.innerHeight and mv_bottom:
-                top += cv_mv
-                if top+h+160 >= window.innerHeight:
-                    mv_bottom = False
-            elif not mv_bottom:
-                top -= cv_mv
-                if top <= 0:
-                    mv_bottom = True
-        cv.style.left = ""+left+"px"
-        cv.style.top = ""+top+"px"
-        cv.style.border = '5px solid black'
+    nonlocal start
+    nonlocal started
+    if start and started:
+        if player.alive:
+            nonlocal mv_right
+            nonlocal mv_bottom
+            cv = document.getElementById("canvas")
+            if player.alive and (player.snake_length-1 >= 10):
+                if left+w+20 < window.innerWidth and mv_right:
+                    left += cv_mv
+                    if left+w+20 >= window.innerWidth:
+                        mv_right = False
+                elif not mv_right:
+                    left -= cv_mv
+                    if left <= 0:
+                        mv_right = True
+                if top+h+160 < window.innerHeight and mv_bottom:
+                    top += cv_mv
+                    if top+h+160 >= window.innerHeight:
+                        mv_bottom = False
+                elif not mv_bottom:
+                    top -= cv_mv
+                    if top <= 0:
+                        mv_bottom = True
+            cv.style.left = ""+left+"px"
+            cv.style.top = ""+top+"px"
+            cv.style.border = '5px solid black'
+    window.setTimeout(moveCanvas, 75)
 
 mv_right = True
 mv_bottom = True
-window.setInterval(moveCanvas, 75)
 
 def changeColor():
-    if player.alive and (player.snake_length-1 >=5):
+    if start and started and player.alive and (player.snake_length-1 >=5):
         nonlocal rd
         nonlocal gd
         nonlocal bd
@@ -353,7 +376,7 @@ def changeColor():
             if b == 255:
                 bd = True
         canvas.backgroundColor = 'rgb('+r+','+g+','+b+')'
+    window.setTimeout(changeColor, 100)
 
 r, g, b = int(255*Math.random()), int(255*Math.random()), int(255*Math.random())
 rd, gd, bd = True, True, True
-window.setInterval(changeColor, 100)
