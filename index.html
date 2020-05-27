@@ -177,7 +177,7 @@
         
         var divImport = document.createElement("div");
         var script = document.createElement("script");
-        script.type = "module";
+        script.type = "text/javascript";
         script.innerHTML = 'var snake = import("https://raw.githubusercontent.com/Gopu2001/PythonicApple/master/__target__/snake.js"); window.snake = snake;';
         divImport.appendChild(script);
         document.body.appendChild(divImport);
