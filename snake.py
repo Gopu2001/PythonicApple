@@ -203,11 +203,11 @@ class Mongoose:
         if self.hunting:
             if self.direction == LEFT:
                 self.locs = [self.locs[0]-inc, self.locs[1]]
-                if self.locs[0] <= 0:
+                if self.locs[0] < 0:
                     self.die()
             if self.direction == UP:
                 self.locs = [self.locs[0], self.locs[1]-inc]
-                if self.locs[1] <= 0:
+                if self.locs[1] < 0:
                     self.die()
             if self.direction == RIGHT:
                 self.locs = [self.locs[0]+inc, self.locs[1]]
@@ -297,6 +297,7 @@ def startTheGame():
     apple = Apple()
     obstacle = Obstacle()
     mongoose = Mongoose()
+    window.setTimeout(genMongoose, 2000)
     window.addEventListener('keydown', player.turn, True)
     document.addEventListener('click', player.turn_mobile)
     started = True
@@ -319,12 +320,12 @@ def draw_mongoose():
         window.setTimeout(draw_mongoose, 250)
 
 def genMongoose():
+    console.log(start + " " + started)
     if start and started:
+        alert("2")
         mongoose.generate_mongoose()
         draw_mongoose()
         window.setTimeout(genMongoose, 250*h/inc*2)
-
-window.setTimeout(genMongoose, 2000)
 
 cv_mv = 1
 left = 0
