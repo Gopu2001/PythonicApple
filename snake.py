@@ -93,6 +93,18 @@ class Snake:
                 self.facing = facing[facing.index(self.facing)+1]
         elif e.keyCode == 80:
             alert("Game Paused. Click OK to continue.")
+    def turn_mobile(self, event):
+        console.log(event.clientX)
+        if event.clientX < screen.width/2:
+            if self.facing == 1:
+                self.facing = 4
+            else:
+                self.facing = facing[facing.index(self.facing)-1]
+        else:
+            if self.facing == 4:
+                self.facing = 1
+            else:
+                self.facing = facing[facing.index(self.facing)+1]
     def die(self):
         player.alive = False
         canvas.remove(self.snake)
@@ -266,6 +278,9 @@ def update():
         window.setTimeout(update, 500)
         #window.onblur = pauseGame
 
+def focus():
+    focus = not focus
+
 def pauseGame():
     alert("Game Paused. Click OK to continue.")
 
@@ -282,6 +297,7 @@ def startTheGame():
     obstacle = Obstacle()
     mongoose = Mongoose()
     window.addEventListener('keydown', player.turn, True)
+    document.addEventListener('click', player.turn_mobile)
     started = True
 update()
 
