@@ -182,6 +182,7 @@ class Mongoose:
         self.locs = [0,0]
         self.mongoose = None
     def generate_mongoose(self):
+        alert("Mongoose on the run")
         self.direction = int(Math.random()*3)+1
         if self.direction == LEFT:
             self.locs[0] = w
