@@ -100,7 +100,7 @@ class Snake:
                 self.facing = 4
             else:
                 self.facing = facing[facing.index(self.facing)-1]
-        else:
+        elif event.clientX > screen.width/2:
             if self.facing == 4:
                 self.facing = 1
             else:
