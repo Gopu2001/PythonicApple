@@ -41,7 +41,6 @@
       var ip;
       function getIP(json) {
         ip = json.ip.split(".").join("_");
-        console.log(ip);
       }
       var ref = firebase.database().ref("scores");
       var dataEntries = 0;
@@ -176,7 +175,6 @@
         canvas.id = "canvas";
         divCanvas.appendChild(canvas);
         document.body.insertBefore(divCanvas, document.getElementById("importDiv"));
-        console.log("canvas width: " + canvas.width)
         
         start = true;
       }
@@ -187,17 +185,12 @@
 
         ref.once("value", function(snapshot) {
           var data = JSON.parse(JSON.stringify(snapshot));
-          console.log("data below");
-          console.log(data);
-          console.log("data above");
-          console.log("ip: " + ip);
           if(!data.hasOwnProperty(ip)) {
             firebase.database().ref('scores/'+ip).set(setData);
           } else if(data[ip].hasOwnProperty(username) && data[ip][username] < score) {
             firebase.database().ref('scores/'+ip).update(setData);
           } else if (!data[ip].hasOwnProperty(username)) {
             data[ip][username] = score;
-            console.log(data);
             firebase.database().ref('scores/').set(data);
           }
           document.body.removeChild(divCanvas);
