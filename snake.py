@@ -110,6 +110,7 @@ class Snake:
         canvas.remove(self.snake)
         for t_box in self.tail:
             canvas.remove(t_box)
+        start = started = False
         gameOver()
 
 class Apple:
