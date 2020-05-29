@@ -270,7 +270,7 @@ def update():
             alert("You went out of bounds! Click OK to continue.")
             player.die()
         if player.alive:
-            update_time = 150 - (10*(player.snake_length-1))
+            update_time = 300 - (10*(player.snake_length-1))
             if update_time <= 0:
                 update_time = 1
             window.setTimeout(update, update_time)
@@ -391,7 +391,7 @@ def changeColor():
             if b == 255:
                 bd = True
         canvas.backgroundColor = 'rgb('+r+','+g+','+b+')'
-    window.setTimeout(changeColor, 100)
+    window.setTimeout(changeColor, 200)
 
 r, g, b = int(255*Math.random()), int(255*Math.random()), int(255*Math.random())
 rd, gd, bd = True, True, True
