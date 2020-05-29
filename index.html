@@ -4,8 +4,20 @@
     <title>PythonicApple</title>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    <style>
+      table, th, td {
+        border: 2px solid black;
+        border-collapse: collapse;
+        font-size: 1.25vw;
+      }
+      html, body {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
   </head>
-  <body>
+  <body style="height: 100%; width: 100%;">
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js" type="text/javascript"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js" type="text/javascript"></script>
@@ -35,7 +47,7 @@
       <input type="text" id="username">
       <button type="submit">Start Game</button>
     </form><br><br><br>
-    <div id="tablediv" style="margin:0 auto; position:absolute; top:25%; left:130px;">
+    <div id="tablediv" style="margin:0 auto; position:absolute; top:25%; left:25%; height:50%; width:50%">
     </div>
     <script>
       var ip;
@@ -139,6 +151,7 @@
 
             var c2 = document.createElement("td");
             c2.appendChild(document.createTextNode(name));
+            c2.style.textAlign = 'center';
 
             var c3 = document.createElement("td");
             c3.appendChild(document.createTextNode(scores[index]));
@@ -155,7 +168,8 @@
           tOS.appendChild(tH);
           tOS.appendChild(tB);
           tOS.setAttribute("id", "tOS");
-          tOS.setAttribute("border", "1");
+          tOS.style.height = "100%";
+          tOS.style.width = "100%";
           document.getElementById("tablediv").appendChild(tOS);
         });
       }
@@ -203,7 +217,7 @@
       }
     </script>
     <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
-    <script type="module" id="importDiv" src="snake.js">import * as snake from "./snake.js"; window.snake = snake;</script>
+    <script type="module" id="importDiv" src="__target__/snake.js">import * as snake from "./__target__/snake.js"; window.snake = snake;</script>
     <style>body {visibility: visible;}</style>
   </body>
 </html>
