@@ -94,7 +94,6 @@ class Snake:
         elif e.keyCode == 80:
             alert("Game Paused. Click OK to continue.")
     def turn_mobile(self, event):
-        console.log(event.clientX)
         if event.clientX < screen.width/2:
             if self.facing == 1:
                 self.facing = 4
@@ -183,7 +182,6 @@ class Mongoose:
         self.locs = [0,0]
         self.mongoose = None
     def generate_mongoose(self):
-        alert("Mongoose on the run")
         self.direction = int(Math.random()*3)+1
         if self.direction == LEFT:
             self.locs[0] = w
@@ -321,9 +319,7 @@ def draw_mongoose():
         window.setTimeout(draw_mongoose, 250)
 
 def genMongoose():
-    console.log(start + " " + started)
     if start and started:
-        alert("2")
         mongoose.generate_mongoose()
         draw_mongoose()
         window.setTimeout(genMongoose, 250*h/inc*2)
