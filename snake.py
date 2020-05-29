@@ -236,11 +236,7 @@ class Mongoose:
         self.hunting = False
         canvas.remove(self.mongoose)
 
-u = None
 def update():
-    nonlocal u
-    if u != None:
-        window.clearTimeout(u)
     nonlocal slowdown
     nonlocal start
     nonlocal started
@@ -282,9 +278,9 @@ def update():
             update_time = 350 - (10*(player.snake_length-1))
             if update_time <= 0:
                 update_time = 1
-            u = window.setTimeout(update, update_time)
+            window.setTimeout(update, update_time)
     else:
-        u = window.setTimeout(update, 500)
+        window.setTimeout(update, 500)
         #window.onblur = pauseGame
 
 def focus():
@@ -312,21 +308,13 @@ def startTheGame():
     started = True
 update()
 
-d = None
 def draw_mongoose():
-    nonlocal d
-    if d != None:
-        window.clearTimeout(d)
     mongoose.draw()
     checkMongooseOrDead()
     if mongoose.hunting:
-        d = window.setTimeout(draw_mongoose, 250)
+        window.setTimeout(draw_mongoose, 250)
 
-c = None
 def checkMongooseOrDead():
-    nonlocal c
-    if c != None:
-        window.clearTimeout(c)
     if mongoose.hunting:
         index = 0
         for coordinate in player.coords:
@@ -344,17 +332,13 @@ def checkMongooseOrDead():
         update_time = 50
         if update_time <= 0:
             update_time = 1
-        c = window.setTimeout(checkMongooseOrDead, update_time)
+        window.setTimeout(checkMongooseOrDead, update_time)
 
-g = None
 def genMongoose():
-    nonlocal g
-    if g != None:
-        window.clearTimeout(g)
     if start and started:
         mongoose.generate_mongoose()
         draw_mongoose()
-        g = window.setTimeout(genMongoose, 250*h/inc*2)
+        window.setTimeout(genMongoose, 250*h/inc*2)
 
 cv_mv = 1
 left = 0
