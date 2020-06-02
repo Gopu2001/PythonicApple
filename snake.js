@@ -1,4 +1,4 @@
-// Transcrypt'ed from Python, 2020-05-29 01:56:17
+// Transcrypt'ed from Python, 2020-06-01 15:19:57
 import {AssertionError, AttributeError, BaseException, DeprecationWarning, Exception, IndexError, IterableError, KeyError, NotImplementedError, RuntimeWarning, StopIteration, UserWarning, ValueError, Warning, __JsIterator__, __PyIterator__, __Terminal__, __add__, __and__, __call__, __class__, __envir__, __eq__, __floordiv__, __ge__, __get__, __getcm__, __getitem__, __getslice__, __getsm__, __gt__, __i__, __iadd__, __iand__, __idiv__, __ijsmod__, __ilshift__, __imatmul__, __imod__, __imul__, __in__, __init__, __ior__, __ipow__, __irshift__, __isub__, __ixor__, __jsUsePyNext__, __jsmod__, __k__, __kwargtrans__, __le__, __lshift__, __lt__, __matmul__, __mergefields__, __mergekwargtrans__, __mod__, __mul__, __ne__, __neg__, __nest__, __or__, __pow__, __pragma__, __proxy__, __pyUseJsNext__, __rshift__, __setitem__, __setproperty__, __setslice__, __sort__, __specialattrib__, __sub__, __super__, __t__, __terminal__, __truediv__, __withblock__, __xor__, abs, all, any, assert, bool, bytearray, bytes, callable, chr, copy, deepcopy, delattr, dict, dir, divmod, enumerate, filter, float, getattr, hasattr, input, int, isinstance, issubclass, len, list, map, max, min, object, ord, pow, print, property, py_TypeError, py_iter, py_metatype, py_next, py_reversed, py_typeof, range, repr, round, set, setattr, sorted, str, sum, tuple, zip} from './org.transcrypt.__runtime__.js';
 import {fabric} from './com.fabricjs.js';
 var __name__ = '__main__';
@@ -261,7 +261,11 @@ export var Mongoose =  __class__ ('Mongoose', [object], {
 		canvas.remove (self.mongoose);
 	});}
 });
+export var u = null;
 export var py_update = function () {
+	if (u != null) {
+		window.clearTimeout (u);
+	}
 	if (player != null) {
 		moveCanvas ();
 		changeColor ();
@@ -299,11 +303,11 @@ export var py_update = function () {
 			if (update_time <= 0) {
 				var update_time = 1;
 			}
-			window.setTimeout (py_update, update_time);
+			u = window.setTimeout (py_update, update_time);
 		}
 	}
 	else {
-		window.setTimeout (py_update, 500);
+		u = window.setTimeout (py_update, 500);
 	}
 };
 export var focus = function () {
@@ -325,14 +329,22 @@ export var startTheGame = function () {
 	started = true;
 };
 py_update ();
+export var d = null;
 export var draw_mongoose = function () {
+	if (d != null) {
+		window.clearTimeout (d);
+	}
 	mongoose.draw ();
 	checkMongooseOrDead ();
 	if (mongoose.hunting) {
-		window.setTimeout (draw_mongoose, 250);
+		d = window.setTimeout (draw_mongoose, 250);
 	}
 };
+export var c = null;
 export var checkMongooseOrDead = function () {
+	if (c != null) {
+		window.clearTimeout (c);
+	}
 	if (mongoose.hunting) {
 		var index = 0;
 		for (var coordinate of player.coords) {
@@ -355,14 +367,18 @@ export var checkMongooseOrDead = function () {
 		if (update_time <= 0) {
 			var update_time = 1;
 		}
-		window.setTimeout (checkMongooseOrDead, update_time);
+		c = window.setTimeout (checkMongooseOrDead, update_time);
 	}
 };
+export var g = null;
 export var genMongoose = function () {
+	if (g != null) {
+		window.clearTimeout (g);
+	}
 	if (start && started) {
 		mongoose.generate_mongoose ();
 		draw_mongoose ();
-		window.setTimeout (genMongoose, ((250 * h) / inc) * 2);
+		g = window.setTimeout (genMongoose, ((250 * h) / inc) * 2);
 	}
 };
 export var cv_mv = 1;
@@ -459,7 +475,7 @@ export var changeColor = function () {
 };
 var __left0__ = tuple ([int (255 * Math.random ()), int (255 * Math.random ()), int (255 * Math.random ())]);
 export var r = __left0__ [0];
-export var g = __left0__ [1];
+var g = __left0__ [1];
 export var b = __left0__ [2];
 var __left0__ = tuple ([true, true, true]);
 export var rd = __left0__ [0];

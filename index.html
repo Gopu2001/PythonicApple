@@ -1,223 +1,206 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PythonicApple</title>
-    <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>PythonicApple | Rules</title>
     <style>
-      table, th, td {
-        border: 2px solid black;
-        border-collapse: collapse;
-        font-size: 1.25vw;
-      }
-      html, body {
-        overflow: hidden;
-        height: 100%;
+      .header {
+        background-color: rgb(0,255,0);
         width: 100%;
+        margin: 0px;
+        padding: 1px;
+        font-size: 26px;
+      }
+      .right {
+        background-color: rgb(175, 175, 175);
+        width: 31%;
+        height: 82%;
+        right: 0.5vw;
+        position: fixed;
+        z-index: 1;
+        overflow-x: hidden;
+        padding: 0 8px;
+        font-size: 22px;
+      }
+      .right h3 p {
+        display: block;
+      }
+      .right h1 {
+        text-align: center;
+      }
+      
+      .left {
+        background-color: rgb(175, 175, 175);
+        width: 31%;
+        height: 82%;
+        left: 0.5vw;
+        position: fixed;
+        z-index: 1;
+        overflow-x: hidden;
+        padding: 0 8px;
+        font-size: 22px;
+      }
+      .left h3 p {
+        display: block;
+      }
+      .left h1 {
+        text-align: center;
+      }
+      
+      .center {
+        background-color: rgb(175, 175, 175);
+        width: 31%;
+        height: 82%;
+        left: 34%;
+        position: fixed;
+        z-index: 1;
+        overflow-x: hidden;
+        padding: 0 8px;
+        font-size: 22px;
+      }
+      .center h3 p {
+        display: block;
+      }
+      .center h1 {
+        text-align: center;
+      }
+      
+      .spacer {
+        width: 100%;
+      }
+      .spacer p {
+        font-size: 1.5vh;
+      }
+      
+      .main {
+        position: fixed;
       }
     </style>
   </head>
-  <body style="height: 100%; width: 100%;">
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js" type="text/javascript"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js" type="text/javascript"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-database.js" type="text/javascript"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-analytics.js" type="text/javascript"></script>
-
-    <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        apiKey: "AIzaSyBmWhJlX0kcXWz6FfVo3YJVRz4wxBWZs-4",
-        authDomain: "pythonicapple.firebaseapp.com",
-        databaseURL: "https://pythonicapple.firebaseio.com",
-        projectId: "pythonicapple",
-        storageBucket: "pythonicapple.appspot.com",
-        messagingSenderId: "710427168306",
-        appId: "1:710427168306:web:0415efa3eec534f69c362b",
-        measurementId: "G-RJT30JEZJ8"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-    </script>
-    <form onsubmit="startGame(); return false" id="form">
-      <label for="username">Enter your username:</label>
-      <input type="text" id="username">
-      <button type="submit">Start Game</button>
-    </form><br><br><br>
-    <div id="tablediv" style="margin:0 auto; position:absolute; top:25%; left:25%; height:50%; width:50%">
+  <body>
+    <div class="header">
+      <h1 style="text-align: center">PythonicApple: How To Play</h1>
+      <button onclick="window.location.href = 'game.html'">Start Game!</button>
     </div>
-    <script>
-      var ip;
-      function getIP(json) {
-        ip = json.ip.split(".").join("_");
-      }
-      var ref = firebase.database().ref("scores");
-      var dataEntries = 0;
-      ref.once('value', function(snapshot) {
-        dataEntries = snapshot.numChildren();
-        setupHomeTable("Can you beat the top score?", "START");
-      });
-
-      var score = 0;
-      var numScores = 0;
-      var username;
-      var dispScore;
-      var canvas;
-      var divCanvas;
-      var tableOfScores;
-      var tableBody;
-      var tB;
-      var tOS;
-      var lowestScore = -1;
-      var usernames;
-      var scores;
-      var start = false;
-      var started = false
-
-      function setupHomeTable(tabheading, time) {
-        var usnas = [];
-        var scors = [];
-
-        var ref = firebase.database().ref("scores");
-        ref.once("value", function(snapshot) {
-          var data = JSON.parse(JSON.stringify(snapshot));
-          var ips = Object.keys(data);
-          ips.forEach(function(ipaddr, index) {
-            Object.keys(data[ipaddr]).forEach(function(usna) {
-              usnas.push(usna);
-            });
-            Object.values(data[ipaddr]).forEach(function(scor) {
-              scors.push(scor);
-            });
-          });
-          usernames = [];
-          scores = [];
-          var captured = [];
-          var numberOfScores = scors.length
-          for(var index = 0; index < numberOfScores; index++) {
-            var highest = -1;
-            var kdex = -1;
-            for(var jdex = 0; jdex < scors.length; jdex++) {
-              if(scors[jdex] > highest && !(captured.includes(jdex))) {
-                highest = scors[jdex];
-                kdex = jdex;
-              }
-            }
-            usernames.push(usnas[kdex]);
-            scores.push(highest);
-            captured.push(kdex);
-          }
-          if(usernames.length > 10) {
-            usernames.length = 10;
-            scores.length = 10;
-          }
-          tOS = document.createElement("TABLE");
-          var tH = document.createElement("THEAD");
-          var headRow = tH.insertRow(0);
-
-          var hc1 = document.createElement("td");
-          hc1.appendChild(document.createTextNode("Place"));
-
-          var hc2 = document.createElement("td");
-          hc2.appendChild(document.createTextNode("Username"));
-
-          var hc3 = document.createElement("td");
-          hc3.appendChild(document.createTextNode("Score"));
-
-          headRow.appendChild(hc1);
-          headRow.appendChild(hc2);
-          headRow.appendChild(hc3);
-          headRow.style.fontWeight = 'bold';
-          tH.style.textAlign = 'center';
-
-          var head = tH.insertRow(0);
-          var h = document.createElement("td");
-          h.appendChild(document.createTextNode(tabheading));
-          h.colSpan = '3';
-          head.appendChild(h);
-          head.style.fontWeight = 'bold';
-
-          tB = document.createElement("TBODY");
-
-          usernames.forEach(function(name, index) {
-            var row = tB.insertRow();
-
-            var c1 = document.createElement("td");
-            c1.appendChild(document.createTextNode(index+1));
-            c1.style.textAlign = 'center';
-
-            var c2 = document.createElement("td");
-            c2.appendChild(document.createTextNode(name));
-            c2.style.textAlign = 'center';
-
-            var c3 = document.createElement("td");
-            c3.appendChild(document.createTextNode(scores[index]));
-            c3.style.textAlign = 'center';
-
-            row.appendChild(c1);
-            row.appendChild(c2);
-            row.appendChild(c3);
-            if(time == "END" && name == username && score == scores[index]) {
-              row.style.backgroundColor = "green";
-            }
-          });
-
-          tOS.appendChild(tH);
-          tOS.appendChild(tB);
-          tOS.setAttribute("id", "tOS");
-          tOS.style.height = "100%";
-          tOS.style.width = "100%";
-          document.getElementById("tablediv").appendChild(tOS);
-        });
-      }
-
-      function startGame() {
-        username = document.getElementById("username").value;
-        var form = document.getElementById("form");
-        document.body.removeChild(form);
-        $("#tOS").remove();
-        dispScore = document.createElement("H1");
-        dispScore.innerHTML = "Score: ".concat(score);
-        document.body.insertBefore(dispScore, document.getElementById("importDiv"));
-
-        divCanvas = document.createElement("div");
-        canvas = document.createElement("CANVAS");
-        canvas.style.position = "relative";
-        canvas.id = "canvas";
-        divCanvas.appendChild(canvas);
-        document.body.insertBefore(divCanvas, document.getElementById("importDiv"));
+    <div class="spacer"><p><p></div>
+    <div class="main">
+      <div class="right">
+        <h1>About</h1>
+        <h3>PythonicApple</h3>
+        <p>OnTheWeb PythonicApple (Retro Snake Game) made with Transcrypt-Python</p>
         
-        start = true;
+        <h3>Origins & Changes</h3>
+        <p>OTW Pythonic Apple is based on one of my favorite retro games, Snake.
+        The original game, or the closest to the original game online version, 
+        can be found at <a href="https://snake97.com/">https://snake97.com/</a>. However, this version of the snake game, 
+        Pythonic Apple has many of the same rules, but is different from the 
+        most versions of the game in 3 very different ways:</p>
+        <ol>
+          <li>there are obstacles that protect the apple from being eaten,</li>
+          <li>the canvas randomly changes color after a certain score is 
+         reached.</li>
+          <li>the canvas where the snake game is played on bounces around 
+         the screen in a predicted way after a certain score is reached, and</li>
+        </ol>
+      </div>
+      <div class="left">
+        <h1>Controls</h1>
+        <h3>Desktop/Laptop Computer</h3>
+        <p>This option to playing the game has the best experience and is most 
+        comfortable to play on. Press the LEFT or RIGHT arrow key to turn the 
+        snake left or right from its perspective. Press 'P' to pause the game.</p>
+        
+        <h3>All Mobile Devices & Computers</h3>
+        <p>All devices may tap (mobile devices) or mouse-click (non-mobile 
+        devices) on a side of the screen to change the snake's direction. This 
+        means that if you tap on the left side of the screen, then the snake 
+        will turn left, and if you tap on the right side of the screen, then 
+        the snake will turn right. There is currently no mobile feature to 
+        pause the game. Increased functionality will come in later updates.</p>
+        
+        <h3>Visual Representation of Controls</h3>
+        <table>
+          <tr>
+            <td><img src="LEFT.png" alt="Left Arrow Key"></img></td>
+            <td><p>This key turns the snake to ITS left.</p></td>
+          </tr>
+          <tr>
+            <td><img src="RIGHT.png" alt="Right Arrow Key"></img></td>
+            <td><p>This key turns the snake to ITS right.</p></td>
+          </tr>
+          <tr>
+            <td><img src="P.png" alt="P Key"></img></td>
+            <td><p>This key pauses the game.</p></td>
+          </tr>
+          <tr>
+            <td><img src="CP_Left.png" alt="P Key"></img></td>
+            <td><p>Tapping on the left side of the screen turns the snake to ITS left.</p></td>
+          </tr>
+          <tr>
+            <td><img src="CP_Right.png" alt="P Key"></img></td>
+            <td><p>Tapping on the right side of the screen turns the snake to ITS right.</p></td>
+          </tr>
+        </table>
+        <br>
+      </div>
+      <div class="center">
+        <h1>Tips and Tricks</h1>
+        <h3>Die at the right time</h3>
+        <p>You never know when a Mongoose (a yellow block moving in a straight 
+        line) is going to sneak up on you. A Mongoose may spawn and eat 
+        your tail off, effectively diminishing your score.</p>
+        
+        <h3>Watch these Videos</h3>
+        <p>If you are stuck, then try watching some of these below videos:</p>
+        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/-cZdjutzD3s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var t = null;
+      var r = Math.round(Math.random()*255); var rt = !!(Math.round(Math.random()));
+      var g = Math.round(Math.random()*255); var gt = !!(Math.round(Math.random()));
+      var b = Math.round(Math.random()*255); var bt = !!(Math.round(Math.random()));
+      function changeBackground() {
+        if(t != null) {
+          window.clearTimeout(t);
+        }
+        
+        if(r == 255) {
+          rt = false;
+        } else if(r == 0) {
+          rt = true;
+        }
+        if(g == 255) {
+          gt = false;
+        } else if(g == 0) {
+          gt = true;
+        }
+        if(b == 255) {
+          bt = false;
+        } else if(b == 0) {
+          bt = true;
+        }
+        
+        if(rt) {
+          r += 1;
+        } else {
+          r -= 1;
+        }
+        if(gt) {
+          g += 1;
+        } else {
+          g -= 1;
+        }
+        if(bt) {
+          b += 1;
+        } else {
+          b -= 1;
+        }
+        document.body.style.background = "rgb(" + r + "," + g + "," + b + ")";
+        t = window.setTimeout(changeBackground, 50);
       }
-      function gameOver() {
-        var setData = JSON.parse("{\""+username+"\":"+score+"}");
-
-        var ref = firebase.database().ref("scores");
-
-        ref.once("value", function(snapshot) {
-          var data = JSON.parse(JSON.stringify(snapshot));
-          if(!data.hasOwnProperty(ip)) {
-            firebase.database().ref('scores/'+ip).set(setData);
-          } else if(data[ip].hasOwnProperty(username) && data[ip][username] < score) {
-            firebase.database().ref('scores/'+ip).update(setData);
-          } else if (!data[ip].hasOwnProperty(username)) {
-            data[ip][username] = score;
-            firebase.database().ref('scores/').set(data);
-          }
-          document.body.removeChild(divCanvas);
-          setupHomeTable("Did you get the top score?", "END");
-        });
-      }
-      function changeScore(newScore) {
-        score = newScore;
-        dispScore.innerHTML = "Score: ".concat(score);
-      }
+      changeBackground();
     </script>
-    <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
-    <script type="module" id="importDiv" src="snake.js">import * as snake from "./snake.js"; window.snake = snake;</script>
-    <style>body {visibility: visible;}</style>
   </body>
 </html>
