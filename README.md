@@ -16,6 +16,7 @@ most versions of the game in 4 very different ways:
 	4. only two buttons work in this game: the left and right arrow keys.
 
 # Downloads
-To download this game as a python file, the download link will be posted soon.
+To download this game as a python file, you may download the following
+two files: original.py and high_score.txt. Enjoy!
 To play this game online, please go to 
 https://gopu2001.github.io/PythonicApple/.
